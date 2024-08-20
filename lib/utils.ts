@@ -1,7 +1,9 @@
+import { IsEqual } from './../node_modules/react-hook-form/dist/types/utils.d';
 /* eslint-disable no-prototype-builtins */
 import { type ClassValue, clsx } from "clsx";
 import qs from "query-string";
 import { twMerge } from "tailwind-merge";
+import { z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -193,3 +195,38 @@ export const getTransactionStatus = (date: Date) => {
 
   return date > twoDaysAgo ? "Processing" : "Success";
 };
+
+export const authFormSchema = (type: string) => z.object({
+    //sign up
+    firstName: type === 'sign-in' ? z.string().optional() : z.string().min(3, {
+        message: "First name must be at least 3 characters."
+    }),
+    lastName: type === 'sign-in' ? z.string().optional() : z.string().min(2, {
+        message: "Last name must be at least 2 characters."
+    }),
+    address1: type === 'sign-in' ? z.string().optional() : z.string().max(50, {
+        message: "Address can not exceed 50 characters."
+    }),
+    city: type === 'sign-in' ? z.string().optional() : z.string().max(40, {
+        message: "City can not exceed 40 characters."
+    }),
+    state: type === 'sign-in' ? z.string().optional() : z.string().max(2).min(2, {
+        message: "state must have 2 characters."
+    }),
+    postalCode: type === 'sign-in' ? z.string().optional() : z.string().max(6, {
+        message: "Postal code can not exceed 6 characters."
+    }).min(3, {
+        message: "Postal code must be at least 3 characters."
+    }),
+    dateOfBirth: type === 'sign-in' ? z.string().optional() : z.string().min(10, {
+        message: "Date of birth must be at least 10 characters."
+    }),
+    ssn: type === 'sign-in' ? z.string().optional() : z.string().min(3, {
+        message: "SSN must be at least 3 characters."
+    }),
+    // sign up and sign in
+    email: z.string().email(),
+    password: z.string().min(8, {
+        message: "Password must be at least 8 characters."
+    }),
+})
