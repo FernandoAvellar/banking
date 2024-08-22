@@ -29,16 +29,15 @@ const AuthForm = ({ type }: { type: string }) => {
 
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
         setIsLoading(true)
-
         try {
             //Sign up with Appwrite & create plaid token
-
             if (type == 'sign-up') {
+                router.push('/sign-in');
                 // const newUser = await signUp(data);
                 // setUser(newUser);
             }
-
             if (type == 'sign-in') {
+                router.push('/');
                 // const response = await signIn({
                 //     email: data.email,
                 //     password: data.password,
@@ -48,7 +47,6 @@ const AuthForm = ({ type }: { type: string }) => {
                 //     router.push('/');
                 // } 
             }
-
         } catch (error) {
             console.log(error);
         }
@@ -97,7 +95,7 @@ const AuthForm = ({ type }: { type: string }) => {
             ) : (
                 <>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                             {type === 'sign-up' && (
                                 <>
                                     <div className='flex gap-4'>
